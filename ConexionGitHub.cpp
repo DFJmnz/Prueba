@@ -5,7 +5,7 @@ using namespace std;
 
 int main(){
 
-  cout << "\nHola mundo, tengo miedo no sé que pasa\n\n";
+  cout << "\nHola mundo, ya estamos bien?\n\n";
 
   return 0;
 }
