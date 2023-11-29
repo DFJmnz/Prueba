@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <iomanip>  // Necesario para std::setw y std::setfill
+#include <conio.h>
 
 using namespace std;
 
@@ -14,7 +15,7 @@ public:
         this->autor = autor;
         this->genero = genero;
         this->anioPublic = anioPublic;
-        this->ISBN = ISBN;
+        this->ISBN = generarISBN();
         this->review = review;
         this->stock = stock;
         this->numPaginas = numPaginas;
@@ -142,6 +143,7 @@ int opcion;
 
 }
 
+
 int main() {
 
     libro L1("Caaaaaaa", "Charles Perrault", "Infantil", 1697, "Muy bueno", 5, 20);
@@ -150,7 +152,9 @@ int main() {
 
     vector<libro*> v = {&L1, &L2, &L3};
 
-    imprimirLibros(v);
+    //imprimirLibros(v);
+    menuPrincipal();
+    getch();
 
     return 0;
 }
