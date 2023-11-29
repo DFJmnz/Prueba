@@ -46,7 +46,7 @@ int getAnioPublic() {
     return anioPublic;
     }
 
-int getISBN() {
+string getISBN() {
     return ISBN;
     }
 
@@ -75,18 +75,19 @@ private:
     static int numeroLibro;
 
     string generarISBN() {
-        // Obtener el año de publicación con 4 dígitos
-        string anio = to_string(anioPublic);
-        // Obtener el número de libro con 2 dígitos
-        string numLibroStr = to_string(numeroLibro);
-        // Rellenar con ceros a la izquierda si es necesario
-        numLibroStr = std::setw(2) << std::setfill('0') << numLibroStr;
+           // Obtener el año de publicación con 4 dígitos
+    	string anio = to_string(anioPublic);
+    	// Obtener el número de libro con 2 dígitos
+	    string numLibroStr = to_string(numeroLibro);
+    	// Rellenar con ceros a la izquierda si es necesario
+    	numLibroStr = std::string(2 - numLibroStr.length(), '0') + numLibroStr;
 
         // Concatenar las partes para formar el ISBN
         string isbn = "978" + anio + numLibroStr;
 
         return isbn;
     }
+};
 
     int libro::numeroLibro = 0;
 
@@ -109,9 +110,9 @@ void imprimirLibros(vector<libro*> v) {
 
 int main() {
 
-    libro L1("Caaaaaaa", "Charles Perrault", "Infantil", 1697, 001, "Muy bueno", 5, 20);
-    libro L2("Eaaaaaaaaa", "Dr. Seuss", "Infantil", 1971, 002, "Muy bueno", 5, 20);
-    libro L3("Daaaaaaaaa", " Miguel de Cervantes", "Aventura", 1605, 003, "Muy bueno", 5, 500);
+    libro L1("Caaaaaaa", "Charles Perrault", "Infantil", 1697, "Muy bueno", 5, 20);
+    libro L2("Eaaaaaaaaa", "Dr. Seuss", "Infantil", 1971, "Muy bueno", 5, 20);
+    libro L3("Daaaaaaaaa", " Miguel de Cervantes", "Aventura", 1605, "Muy bueno", 5, 500);
 
     vector<libro*> v = {&L1, &L2, &L3};
 
