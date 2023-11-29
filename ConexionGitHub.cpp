@@ -4,6 +4,8 @@
 #include <vector>
 #include <iomanip>  // Necesario para std::setw y std::setfill
 #include <conio.h>
+#include <cstring>  // Necesario para funciones relacionadas con cadenas de caracteres
+#include <cstdlib>  // Necesario para exit
 
 using namespace std;
 
@@ -21,11 +23,24 @@ public:
         this->numPaginas = numPaginas;
     }*/
 
-    libro(char titulo[], char autor[], char genero[], int anioPublic, 
+    /*libro(char titulo[], char autor[], char genero[], int anioPublic, 
         string review, int stock, int numPaginas) 
         : titulo(titulo), autor(autor), genero(genero), anioPublic(anioPublic),
           review(review), stock(stock), numPaginas(numPaginas) {
-        // Incrementar el número de libro y generar el ISBN
+        // Incrementar el número de libro y generar el ISBN*/
+    libro(const char titulo[], const char autor[], const char genero[], int anioPublic, 
+        string review, int stock, int numPaginas) 
+        : anioPublic(anioPublic), stock(stock), numPaginas(numPaginas) {
+
+        // Copiar títulos, autores y géneros a los arreglos de la clase
+        strncpy(this->titulo, titulo, sizeof(this->titulo) - 1);
+        this->titulo[sizeof(this->titulo) - 1] = '\0';  // Asegurar la terminación nula
+
+        strncpy(this->autor, autor, sizeof(this->autor) - 1);
+        this->autor[sizeof(this->autor) - 1] = '\0';
+
+        strncpy(this->genero, genero, sizeof(this->genero) - 1);
+        this->genero[sizeof(this->genero) - 1] = '\0';
         numeroLibro++;
         ISBN = generarISBN();
     }
