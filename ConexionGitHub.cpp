@@ -16,7 +16,7 @@ private:
     int anioPublic;
     string ISBN;
     char editorial[100];
-    double precio;
+    float precio;
     int numPaginas;
     static int numeroLibro;
 
@@ -130,10 +130,9 @@ void agregarLibro() {
     char autor[150];
     char genero[150];
     int anioPublic;
-    string ISBN;
+    char editorial[100];
+    float precio;
     int numPaginas;
-    string review;
-    int stock;
 
     cout << "Ingrese el título del libro: ";
     cin.ignore();
@@ -148,17 +147,17 @@ void agregarLibro() {
     cout << "Ingrese el año de publicación del libro: ";
     cin >> anioPublic;
 
-    cout << "Ingrese la reseña del libro: ";
+    cout << "Ingrese la editorial del libro: ";
     cin.ignore();
-    getline(cin, review);
+    cin.getline(editorial, sizeof(editorial));
 
-    cout << "Ingrese el stock disponible del libro: ";
-    cin >> stock;
+    cout << "Ingrese el precio del libro: ";
+    cin >> precio;
 
     cout << "Ingrese el número de páginas del libro: ";
     cin >> numPaginas;
 
-    libro* nuevoLibro = new libro(titulo, autor, genero, anioPublic, review, stock, numPaginas);
+    libro* nuevoLibro = new libro(titulo, autor, genero, anioPublic, editorial, precio, numPaginas);
     v.push_back(nuevoLibro);
 
     cout << "Libro agregado exitosamente.\n";
