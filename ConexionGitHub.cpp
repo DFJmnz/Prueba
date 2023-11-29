@@ -15,41 +15,43 @@ private:
     char genero[150];
     int anioPublic;
     string ISBN;
+    char editorial[100];
+    double precio;
     int numPaginas;
-    string review;
-    int stock;
     static int numeroLibro;
 
 public:
-
    libro(const char titulo[], const char autor[], const char genero[], int anioPublic, 
-    const string& review, int stock, int numPaginas) 
-    : anioPublic(anioPublic), stock(stock), numPaginas(numPaginas) {
+        const char editorial[], double precio, int numPaginas) 
+        : anioPublic(anioPublic), numPaginas(numPaginas) {
 
-    // Copy titles, authors, and genres to the member variables
-    strncpy(this->titulo, titulo, sizeof(this->titulo) - 1);
-    this->titulo[sizeof(this->titulo) - 1] = '\0';  // Ensure null termination
+        // Copiar títulos, autores y géneros a los arreglos de la clase
+        strncpy(this->titulo, titulo, sizeof(this->titulo) - 1);
+        this->titulo[sizeof(this->titulo) - 1] = '\0';  // Asegurar la terminación nula
 
-    strncpy(this->autor, autor, sizeof(this->autor) - 1);
-    this->autor[sizeof(this->autor) - 1] = '\0';
+        strncpy(this->autor, autor, sizeof(this->autor) - 1);
+        this->autor[sizeof(this->autor) - 1] = '\0';
 
-    strncpy(this->genero, genero, sizeof(this->genero) - 1);
-    this->genero[sizeof(this->genero) - 1] = '\0';
+        strncpy(this->genero, genero, sizeof(this->genero) - 1);
+        this->genero[sizeof(this->genero) - 1] = '\0';
+        
+        strncpy(this->editorial, editorial, sizeof(this->editorial) - 1);
+        this->editorial[sizeof(this->editorial) - 1] = '\0';
 
-    numeroLibro++;
-    ISBN = generarISBN();
-}
+	numeroLibro++;
+        ISBN = generarISBN();
+    }
 
 //Getters
-string getTitulo() {
+const char* getTitulo() {
     return titulo;
     }
 
-string getAutor() {
+const char* getAutor() {
     return autor;
     }
 
-string getGenero() {
+const char* getGenero() {
     return genero;
     }
 
@@ -61,12 +63,12 @@ string getISBN() {
     return ISBN;
     }
 
-string getReview() {
-    return review;
+const char* getEditorial() {
+    return editorial;
     }
 
-int getStock() {
-    return stock;
+double getPrecio() {
+    return precio;
     }
 
 int getNumPaginas() {
@@ -99,18 +101,16 @@ vector<libro*> v;
 
 void imprimirLibros(vector<libro*> v) {
     for(libro* L: v) {
-        cout << "Titulo: " << L->getTitulo() << endl;
+       cout << "Titulo: " << L->getTitulo() << endl;
         cout << "Autor: " << L->getAutor()<< endl;
         cout << "Genero: " << L->getGenero() << endl;
-        cout << "Anio de publicacion: " << L->getAnioPublic() << endl;
-        cout << "ISBN: " << L->getISBN()<< endl;
-        cout << "Resenia: " << L->getReview() << endl;
-        cout << "Stock disponible: " << L->getStock()<< endl;
         cout << "# Paginas: " << L->getNumPaginas() << endl;
+        cout << "Anio de publicacion: " << L->getAnioPublic() << endl;
+        cout << "Editorial: " << L->getEditorial() << endl;
+        cout << "ISBN: " << L->getISBN()<< endl;
+        cout << "Precio: " << L->getPrecio()<< endl;
         cout << endl;
-
-    }
-    
+    } 
 }
 
 void listadoLibros(vector<libro*> v) {
