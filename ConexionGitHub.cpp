@@ -5,7 +5,6 @@
 #include <iomanip>  // Necesario para std::setw y std::setfill
 #include <conio.h>
 #include <cstring>  // Necesario para funciones relacionadas con cadenas de caracteres
-#include <cstdlib>  // Necesario para exit
 
 using namespace std;
 
