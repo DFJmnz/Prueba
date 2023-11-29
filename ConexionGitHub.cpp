@@ -1,4 +1,4 @@
-//Gutiérrez Córdova () - Jiménez Bracamonte (221213676) - Retana Romero ()
+//Gutiérrez Córdova (221214790) - Jiménez Bracamonte (221213676) - Retana Romero (221216071)
 
 #include <iostream>
 #include <vector>
