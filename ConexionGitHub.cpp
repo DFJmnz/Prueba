@@ -1,5 +1,5 @@
 //Gutiérrez Córdova (221214790) - Jiménez Bracamonte (221213676) - Retana Romero (221216071)
-//HOLA
+
 #include <iostream>
 #include <vector>
 #include <iomanip>  // Necesario para std::setw y std::setfill
