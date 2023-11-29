@@ -108,6 +108,40 @@ void imprimirLibros(vector<libro*> v) {
     
 }
 
+void menuPrincipal() {
+int opcion;
+        cout<<"\n*********** SISTEMA DE GESTION PARA LIBRERIAS ***********\n";
+        cout<<"\n>>Bienvenido. Eliga una opcion para comenzar:\n";
+        cout<<"1. Ver lista de libros \n2. Gestionar libros \n3. Simulador de compra \n4. Salir";
+        cout<<"\nSeleccion : ";
+        cin>>opcion;
+
+        switch(opcion) {
+            case 1:
+            cout << "1";
+            break;
+
+            case 2:
+            cout << "2";
+            break;
+
+            case 3:
+            cout << "3";
+            break;
+
+            case 4:
+            exit(0);
+
+            default:
+            cout << "Opcion invalida. Ingrese otra opcion.";
+            getch();
+            system("cls");
+            menuPrincipal();
+        }
+
+
+}
+
 int main() {
 
     libro L1("Caaaaaaa", "Charles Perrault", "Infantil", 1697, "Muy bueno", 5, 20);
