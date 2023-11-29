@@ -105,8 +105,14 @@ private:
     }
 };
 
-    int libro::numeroLibro = 0;
+int libro::numeroLibro = 0;
 
+//Prototipo de funcion
+void menuPrincipal();
+void menu1();
+void menu2();
+void menu3();
+vector<libro*> v;
 
 void imprimirLibros(vector<libro*> v) {
     for(libro* L: v) {
@@ -124,49 +130,124 @@ void imprimirLibros(vector<libro*> v) {
     
 }
 
-void menuPrincipal() {
-int opcion;
-    cout<<"\n*********** SISTEMA DE GESTION PARA LIBRERIAS ***********\n";
-    cout<<"\n>>Bienvenido. Eliga una opcion para comenzar:\n";
-    cout<<"1. Ver lista de libros \n2. Gestionar libros \n3. Simulador de compra \n4. Salir";
-    cout<<"\nSeleccion : ";
-    cin>>opcion;
+void listadoLibros(vector<libro*> v) {
 
-    switch(opcion) {
-        case 1:
-        cout << "1";
-        break;
-
-        case 2:
-        cout << "2";
-        break;
-
-        case 3:
-        cout << "3";
-        break;
-
-        case 4:
-        exit(0);
-
-        default:
-        cout << "Opcion invalida. Ingrese otra opcion.";
-        getch();
-        system("cls");
-        menuPrincipal();
-        
-    }
+    if (v.empty()) {
+    cout << "El listado esta vacio.";
+    getch();
+    menu1();
+    } else {imprimirLibros(v);}
 }
 
+void menu1() {
+    system("cls");
+    int opcion;
+        cout<<"\n*********** SISTEMA DE GESTION PARA LIBRERIAS ***********\n\t\t Listado de libros\n";
+        cout<<"\n>>Selecciona una opcion para ver los libros:\n";
+        cout<<"1. Ver todos los libros \n2. Ver por genero \n3. Buscar libro por ISBN \n4. Volver al menu principal";
+        cout<<"\n\nSeleccion : ";
+        cin>>opcion;
+
+        switch(opcion) {
+            case 1:
+            listadoLibros(v);
+            break;
+
+            case 2:
+            break;
+
+            case 3:
+            break;
+
+            case 4:
+            menuPrincipal();
+
+            default:
+            cout << "Opcion invalida. Ingrese otra opcion.";
+            getch();
+            system("cls");
+            menu1();
+        }
+
+}
+
+void menu2() {
+    int opcion;
+        cout<<"\n*********** SISTEMA DE GESTION PARA LIBRERIAS ***********\n\t\t Gestion de libros\n";
+        cout<<"\n>>Selecciona una opcion para gestionar los libros:\n";
+        cout<<"1. Agregar un nuevo libro \n2. Eliminar un libro \n3. Modificar un libro \n4. Volver al menu principal";
+        cout<<"\n\nSeleccion : ";
+        cin>>opcion;
+
+        switch(opcion) {
+            case 1:
+            break;
+
+            case 2:
+            break;
+
+            case 3:
+            break;
+
+            case 4:
+            menuPrincipal();
+
+            default:
+            cout << "Opcion invalida. Ingrese otra opcion.";
+            getch();
+            system("cls");
+            menu2();
+        }
+
+}
+
+void menu3() {
+    int opcion;
+        cout<<"\n********* SISTEMA DE GESTION PARA LIBRERIAS *********\n\t\t Simulador de compra\n";
+        cout<<"\n>>Bienvenido al simulador de compra. Selecciona una opcion:\n";
+        cout<<"1. Agregar un libro al carrito \n2. Eliminar un libro del carrito";
+        cout<<"\nSeleccion : ";
+        cin>>opcion;
+}
+
+void menuPrincipal() {
+system("cls");
+int opcion;
+        cout<<"\n*********** SISTEMA DE GESTION PARA LIBRERIAS ***********\n";
+        cout<<"\n>>Bienvenido. Eliga una opcion para comenzar:\n";
+        cout<<"1. Listado de libros \n2. Gestionar libros \n3. Simulador de compra \n4. Salir";
+        cout<<"\n\nSeleccion : ";
+        cin>>opcion;
+
+        switch(opcion) {
+            case 1:
+            system("cls");
+            menu1();
+            break;
+
+            case 2:
+            system("cls");
+            menu2();
+            break;
+
+            case 3:
+            system("cls");
+            menu3();
+            break;
+
+            case 4:
+            exit(0);
+
+            default:
+            cout << "Opcion invalida. Ingrese otra opcion.";
+            getch();
+            system("cls");
+            menuPrincipal();
+        }
+}
 
 int main() {
 
-    libro L1("Caaaaaaa", "Charles Perrault", "Infantil", 1697, "Muy bueno", 5, 20);
-    libro L2("Eaaaaaaaaa", "Dr. Seuss", "Infantil", 1971, "Muy bueno", 5, 20);
-    libro L3("Daaaaaaaaa", " Miguel de Cervantes", "Aventura", 1605, "Muy bueno", 5, 500);
-
-    vector<libro*> v = {&L1, &L2, &L3};
-
-    //imprimirLibros(v);
     menuPrincipal();
     getch();
 
