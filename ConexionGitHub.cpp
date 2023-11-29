@@ -35,7 +35,8 @@ public:
 
         strncpy(this->genero, genero, sizeof(this->genero) - 1);
         this->genero[sizeof(this->genero) - 1] = '\0';
-        numeroLibro++;
+        
+	numeroLibro++;
         ISBN = generarISBN();
     }
 
@@ -72,7 +73,7 @@ int getNumPaginas() {
     return numPaginas;
     }
 
-    string generarISBN() {
+string generarISBN() {
         // Obtener el año de publicación con 4 dígitos
     	string anio = to_string(anioPublic);
     	// Obtener el número de libro con 2 dígitos
