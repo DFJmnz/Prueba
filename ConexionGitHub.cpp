@@ -21,7 +21,7 @@ public:
         this->numPaginas = numPaginas;
     }*/
 
-    libro(string titulo, string autor, string genero, int anioPublic, 
+    libro(char titulo[], char autor[], char genero[], int anioPublic, 
         string review, int stock, int numPaginas) 
         : titulo(titulo), autor(autor), genero(genero), anioPublic(anioPublic),
           review(review), stock(stock), numPaginas(numPaginas) {
@@ -65,9 +65,9 @@ int getNumPaginas() {
 
 
 private:
-    string titulo;
-    string autor;
-    string genero;
+    char titulo[150];
+    char autor[150];
+    char genero[150];
     int anioPublic;
     string ISBN;
     string review;
@@ -76,7 +76,7 @@ private:
     static int numeroLibro;
 
     string generarISBN() {
-           // Obtener el año de publicación con 4 dígitos
+        // Obtener el año de publicación con 4 dígitos
     	string anio = to_string(anioPublic);
     	// Obtener el número de libro con 2 dígitos
 	    string numLibroStr = to_string(numeroLibro);
