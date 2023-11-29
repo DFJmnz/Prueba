@@ -10,24 +10,18 @@
 using namespace std;
 
 class libro {
-public:
-    /*libro(string titulo, string autor, string genero, int anioPublic, 
-    string ISBN, string review, int stock, int numPaginas) {
-        this->titulo = titulo;
-        this->autor = autor;
-        this->genero = genero;
-        this->anioPublic = anioPublic;
-        this->ISBN = generarISBN();
-        this->review = review;
-        this->stock = stock;
-        this->numPaginas = numPaginas;
-    }*/
+private:
+    char titulo[150];
+    char autor[150];
+    char genero[150];
+    int anioPublic;
+    string ISBN;
+    string review;
+    int stock;
+    int numPaginas;
+    static int numeroLibro;
 
-    /*libro(char titulo[], char autor[], char genero[], int anioPublic, 
-        string review, int stock, int numPaginas) 
-        : titulo(titulo), autor(autor), genero(genero), anioPublic(anioPublic),
-          review(review), stock(stock), numPaginas(numPaginas) {
-        // Incrementar el número de libro y generar el ISBN*/
+public:
     libro(const char titulo[], const char autor[], const char genero[], int anioPublic, 
         string review, int stock, int numPaginas) 
         : anioPublic(anioPublic), stock(stock), numPaginas(numPaginas) {
@@ -77,18 +71,6 @@ int getStock() {
 int getNumPaginas() {
     return numPaginas;
     }
-
-
-private:
-    char titulo[150];
-    char autor[150];
-    char genero[150];
-    int anioPublic;
-    string ISBN;
-    string review;
-    int stock;
-    int numPaginas;
-    static int numeroLibro;
 
     string generarISBN() {
         // Obtener el año de publicación con 4 dígitos
