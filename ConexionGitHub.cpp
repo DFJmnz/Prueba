@@ -16,29 +16,30 @@ private:
     char genero[150];
     int anioPublic;
     string ISBN;
+    int numPaginas;
     string review;
     int stock;
-    int numPaginas;
     static int numeroLibro;
 
 public:
-    libro(const char titulo[], const char autor[], const char genero[], int anioPublic, 
-        string review, int stock, int numPaginas) 
-        : anioPublic(anioPublic), stock(stock), numPaginas(numPaginas) {
 
-        // Copiar títulos, autores y géneros a los arreglos de la clase
-        strncpy(this->titulo, titulo, sizeof(this->titulo) - 1);
-        this->titulo[sizeof(this->titulo) - 1] = '\0';  // Asegurar la terminación nula
+   libro(const char titulo[], const char autor[], const char genero[], int anioPublic, 
+    const string& review, int stock, int numPaginas) 
+    : anioPublic(anioPublic), stock(stock), numPaginas(numPaginas) {
 
-        strncpy(this->autor, autor, sizeof(this->autor) - 1);
-        this->autor[sizeof(this->autor) - 1] = '\0';
+    // Copy titles, authors, and genres to the member variables
+    strncpy(this->titulo, titulo, sizeof(this->titulo) - 1);
+    this->titulo[sizeof(this->titulo) - 1] = '\0';  // Ensure null termination
 
-        strncpy(this->genero, genero, sizeof(this->genero) - 1);
-        this->genero[sizeof(this->genero) - 1] = '\0';
-        
-	numeroLibro++;
-        ISBN = generarISBN();
-    }
+    strncpy(this->autor, autor, sizeof(this->autor) - 1);
+    this->autor[sizeof(this->autor) - 1] = '\0';
+
+    strncpy(this->genero, genero, sizeof(this->genero) - 1);
+    this->genero[sizeof(this->genero) - 1] = '\0';
+
+    numeroLibro++;
+    ISBN = generarISBN();
+}
 
 //Getters
 string getTitulo() {
@@ -73,7 +74,7 @@ int getNumPaginas() {
     return numPaginas;
     }
 
-string generarISBN() {
+    string generarISBN() {
         // Obtener el año de publicación con 4 dígitos
     	string anio = to_string(anioPublic);
     	// Obtener el número de libro con 2 dígitos
@@ -119,7 +120,50 @@ void listadoLibros(vector<libro*> v) {
     cout << "El listado esta vacio.";
     getch();
     menu1();
-    } else {imprimirLibros(v);}
+    } else {imprimirLibros(v);
+    cout << "Presiona enter para volver al menu.";
+    getch();
+    }
+}
+
+void agregarLibro() {
+    char titulo[150];
+    char autor[150];
+    char genero[150];
+    int anioPublic;
+    string ISBN;
+    int numPaginas;
+    string review;
+    int stock;
+
+    cout << "Ingrese el título del libro: ";
+    cin.ignore();
+    cin.getline(titulo, sizeof(titulo));
+
+    cout << "Ingrese el autor del libro: ";
+    cin.getline(autor, sizeof(genero));
+
+    cout << "Ingrese el género del libro: ";
+    cin.getline(genero, sizeof(genero));
+
+    cout << "Ingrese el año de publicación del libro: ";
+    cin >> anioPublic;
+
+    cout << "Ingrese la reseña del libro: ";
+    cin.ignore();
+    getline(cin, review);
+
+    cout << "Ingrese el stock disponible del libro: ";
+    cin >> stock;
+
+    cout << "Ingrese el número de páginas del libro: ";
+    cin >> numPaginas;
+
+    libro* nuevoLibro = new libro(titulo, autor, genero, anioPublic, review, stock, numPaginas);
+    v.push_back(nuevoLibro);
+
+    cout << "Libro agregado exitosamente.\n";
+    getch();
 }
 
 void menu1() {
@@ -134,6 +178,7 @@ void menu1() {
         switch(opcion) {
             case 1:
             listadoLibros(v);
+            menu1();
             break;
 
             case 2:
@@ -164,6 +209,9 @@ void menu2() {
 
         switch(opcion) {
             case 1:
+            agregarLibro();
+            getch();
+            menu2();
             break;
 
             case 2:
