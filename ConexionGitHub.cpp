@@ -15,13 +15,13 @@ private:
     int anioPublic;
     string ISBN;
     char editorial[100];
-    int precio;
+    float precio;
     int numPaginas;
     static int numeroLibro;
 
 public:
    libro(const char titulo[], const char autor[], const char genero[], int anioPublic, 
-        const char editorial[], int precio, int numPaginas) 
+        const char editorial[], float precio, int numPaginas) 
         : anioPublic(anioPublic), numPaginas(numPaginas) {
 
         // Copiar títulos, autores y géneros a los arreglos de la clase
@@ -50,7 +50,7 @@ public:
         return autor;
     }
 
-    const char* getGenero() {
+    const char* getGenero() const{
         return genero;
     }
 
@@ -66,7 +66,7 @@ public:
         return editorial;
     }
 
-    int getPrecio() {
+    float getPrecio() {
         return precio;
     }
 
@@ -99,7 +99,7 @@ public:
         editorial[sizeof(editorial) - 1] = '\0';
     }
 
-    void setPrecio(int nuevoPrecio) {
+    void setPrecio(float nuevoPrecio) {
         precio = nuevoPrecio;
     }
 
@@ -139,17 +139,20 @@ double calcularPromedio(double lista[], int longitud);
 
 void menu2();
 
+
 void menu3();
 
-vector<libro*> v; //Vector para almacenar todos los libros
-vector<libro*> carrito; //Vector para almacenar libros en el carrito
+
+
+vector<libro*> v;
+vector<libro*> carrito; // Nuevo vector para almacenar libros en el carrito
 
 
 
 /*------------------------ MENÚ 1 Y SUS FUNCIONES ---------------------------*/
 void listadoLibros(vector<libro*> v) {
     if (v.empty()) {
-    cout << "La lista esta vacio.";
+    cout << "La lista esta vacia.";
     getch();
     menu1();
     } else {imprimirLibros(v);
@@ -172,7 +175,59 @@ void imprimirLibros(vector<libro*> v) {
     } 
 }
 
-//void generoLibros(){}
+void imprimirLibroGenero(vector<libro*> v) {
+    int opcion;
+    cout << "\n>>Selecciona el genero para ver los libros disponibles:\n";
+    cout << "1. Ciencias de la computacion \n2. Ciencias de la salud \n3. Ciencias ambientales \n4. Ingenieria mecanica \n5. Arquitectura";
+    cout << "\n\nSeleccion : ";
+    cin >> opcion;
+
+    // Filtrar la lista de libros según la opción seleccionada
+    vector<libro*> librosPorGenero;
+    switch (opcion) {
+        system("cls");
+        case 1:
+            copy_if(v.begin(), v.end(), back_inserter(librosPorGenero),
+                    [](const libro* L) { return strcmp(L->getGenero(), "Ciencias de la computacion") == 0; });
+            break;
+
+        case 2:
+            copy_if(v.begin(), v.end(), back_inserter(librosPorGenero),
+                    [](const libro* L) { return strcmp(L->getGenero(), "Ciencias de la salud") == 0; });
+            break;
+
+        case 3:
+            copy_if(v.begin(), v.end(), back_inserter(librosPorGenero),
+                    [](const libro* L) { return strcmp(L->getGenero(), "Ciencias ambientales") == 0; });
+            break;
+
+        case 4:
+            copy_if(v.begin(), v.end(), back_inserter(librosPorGenero),
+                    [](const libro* L) { return strcmp(L->getGenero(), "Ingenieria mecanica") == 0; });
+            break;
+
+        case 5:
+            copy_if(v.begin(), v.end(), back_inserter(librosPorGenero),
+                    [](const libro* L) { return strcmp(L->getGenero(), "Arquitectura") == 0; });
+            break;
+
+        default:
+            cout << "Opcion invalida. Ingrese otra opcion.";
+            getch();
+            return;
+    }
+
+    // Mostrar los libros del género seleccionado
+    cout << "\nLibros del genero seleccionado:\n";
+    if (librosPorGenero.empty()) {
+        cout << "No hay libros en este genero.\n";
+    } else {
+        imprimirLibros(librosPorGenero);
+    }
+
+    cout << "Presiona enter para volver al menú principal.";
+    getch();
+}
 
 libro* buscarLibroPorISBN(const string& isbn, const vector<libro*>& v) {
     auto it = find_if(v.begin(), v.end(), [isbn](const libro* L) {
@@ -188,7 +243,7 @@ libro* buscarLibroPorISBN(const string& isbn, const vector<libro*>& v) {
     }
 }
 
-void imprimirLibroISBN(){
+void imprimirLibroISBN() {
     string isbn;
     cout << "Ingrese el ISBN del libro que desea buscar: ";
     cin >> isbn;
@@ -229,7 +284,8 @@ void menu1() {
             break;
 
             case 2:
-            //generoLibros();
+            imprimirLibroGenero(v);
+            menu1();
             break;
 
             case 3:
@@ -243,7 +299,6 @@ void menu1() {
             default:
             cout << "Opcion invalida. Ingrese otra opcion.";
             getch();
-            system("cls");
             menu1();
         }
 
@@ -256,11 +311,11 @@ void agregarLibro() {
     char genero[100];
     int anioPublic;
     char editorial[100];
-    int precio;
+    float precio;
     int numPaginas;
 
     cout << "Ingrese el titulo del libro: ";
-    cin.ignore(); //
+    cin.ignore();
     cin.getline(titulo, sizeof(titulo));
 
     cout << "Ingrese el autor del libro: ";
@@ -278,9 +333,11 @@ void agregarLibro() {
 
     cout << "Ingrese el precio del libro: ";
     cin >> precio;
+    cin.ignore();
 
     cout << "Ingrese el numero de paginas del libro: ";
     cin >> numPaginas;
+    cin.ignore();
 
     libro* nuevoLibro = new libro(titulo, autor, genero, anioPublic, editorial, precio, numPaginas);
     v.push_back(nuevoLibro);
@@ -290,19 +347,15 @@ void agregarLibro() {
 }
 
 void eliminarLibro() {
-    // Get ISBN of the book to delete
     string isbnEliminar;
     cout << "Ingrese el ISBN del libro que desea eliminar: ";
     cin >> isbnEliminar;
 
-    // Find the book in the vector
     auto it = find_if(v.begin(), v.end(), [isbnEliminar](const libro* L) {
         return L->getISBN() == isbnEliminar;
     });
 
-    // Check if the book is found
     if (it != v.end()) {
-        // Delete the book and remove it from the vector
         delete *it;
         v.erase(it);
 
@@ -315,17 +368,14 @@ void eliminarLibro() {
 }
 
 void modificarLibro() {
-    // Get ISBN of the book to modify
     string isbnModificar;
     cout << "Ingrese el ISBN del libro que desea modificar: ";
     cin >> isbnModificar;
 
-    // Find the book in the vector
     auto it = find_if(v.begin(), v.end(), [isbnModificar](const libro* L) {
         return L->getISBN() == isbnModificar;
     });
 
-    // Check if the book is found
     if (it != v.end()) {
         int opcion;
         cout << "Seleccione el campo que desea modificar:\n";
@@ -333,7 +383,6 @@ void modificarLibro() {
         cout << "Seleccion: ";
         cin >> opcion;
 
-        // Update the selected field based on user input
         switch (opcion) {
             case 1: 
                 char nuevoTitulo[150];
@@ -375,7 +424,7 @@ void modificarLibro() {
                 break;
 
             case 6:
-                int nuevoPrecio;
+                float nuevoPrecio;
                 cout << "Ingrese el nuevo precio: ";
                 cin >> nuevoPrecio;
                 (*it)->setPrecio(nuevoPrecio);
@@ -407,6 +456,7 @@ void modificarLibro() {
 }
 
 void menu2() {
+    system("cls");
     int opcion;
         cout<<"\n***** SISTEMA DE GESTION PARA LIBRERIAS *****\n\t\t Gestion de libros\n";
         cout<<"\n>>Selecciona una opcion para gestionar los libros:\n";
@@ -417,19 +467,16 @@ void menu2() {
         switch(opcion) {
             case 1:
             agregarLibro();
-            system("cls");
             menu2();
             break;
 
             case 2:
             eliminarLibro();
-            system("cls");
             menu2();
             break;
 
             case 3:
             modificarLibro();
-            system("cls");
             menu2();
             break;
 
@@ -439,7 +486,6 @@ void menu2() {
             default:
             cout << "Opcion invalida. Ingrese otra opcion.";
             getch();
-            system("cls");
             menu2();
         }
 
@@ -492,6 +538,7 @@ void mostrarCarrito() {
 //void eliminarDelCarrito() {}
 
 void menu3() {
+    system("cls");
     int opcion;
     cout << "\n**** SISTEMA DE GESTION PARA LIBRERIAS ****\n\t\t Simulador de compra\n";
     cout << "\n>>Bienvenido al simulador de compra. Selecciona una opcion:\n";
@@ -536,17 +583,14 @@ void menuPrincipal() {
 
         switch(opcion) {
             case 1:
-            system("cls");
             menu1();
             break;
 
             case 2:
-            system("cls");
             menu2();
             break;
 
             case 3:
-            system("cls");
             menu3();
             break;
 
@@ -556,7 +600,6 @@ void menuPrincipal() {
             default:
             cout << "Opcion invalida. Ingrese otra opcion.";
             getch();
-            system("cls");
             menuPrincipal();
         }
 }
