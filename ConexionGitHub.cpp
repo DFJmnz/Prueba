@@ -1,5 +1,3 @@
-//Gutiérrez Córdova (221214790) - Jiménez Bracamonte (221213676) - Retana Romero (221216071)
-
 #include <iostream>
 #include <vector>
 #include <iomanip>  // Necesario para std::setw y std::setfill
@@ -39,7 +37,7 @@ public:
         strncpy(this->editorial, editorial, sizeof(this->editorial) - 1);
         this->editorial[sizeof(this->editorial) - 1] = '\0';
 
-	numeroLibro++;
+	    numeroLibro++;
         ISBN = generarISBN();
     }
 
@@ -149,7 +147,6 @@ void imprimirLibros(vector<libro*> v) {
 }
 
 void listadoLibros(vector<libro*> v) {
-
     if (v.empty()) {
     cout << "El listado esta vacio.";
     getch();
@@ -163,23 +160,23 @@ void listadoLibros(vector<libro*> v) {
 void agregarLibro() {
     char titulo[150];
     char autor[150];
-    char genero[150];
+    char genero[100];
     int anioPublic;
     char editorial[100];
     float precio;
     int numPaginas;
 
     cout << "Ingrese el título del libro: ";
-    cin.ignore();
+    cin.ignore(); //
     cin.getline(titulo, sizeof(titulo));
 
     cout << "Ingrese el autor del libro: ";
     cin.getline(autor, sizeof(genero));
 
-    cout << "Ingrese el género del libro: ";
+    cout << "Ingrese el genero del libro: ";
     cin.getline(genero, sizeof(genero));
 
-    cout << "Ingrese el año de publicación del libro: ";
+    cout << "Ingrese el año de publicacion del libro: ";
     cin >> anioPublic;
 
     cout << "Ingrese la editorial del libro: ";
@@ -189,7 +186,7 @@ void agregarLibro() {
     cout << "Ingrese el precio del libro: ";
     cin >> precio;
 
-    cout << "Ingrese el número de páginas del libro: ";
+    cout << "Ingrese el numero de páginas del libro: ";
     cin >> numPaginas;
 
     libro* nuevoLibro = new libro(titulo, autor, genero, anioPublic, editorial, precio, numPaginas);
@@ -262,7 +259,7 @@ void modificarLibro() {
                 break;       
             
             case 3:
-                char nuevoGenero[150];
+                char nuevoGenero[100];
                 cout << "Ingrese el nuevo genero: ";
                 cin.ignore();
                 cin.getline(nuevoGenero, sizeof(nuevoGenero));
@@ -319,7 +316,7 @@ void modificarLibro() {
 void menu1() {
     system("cls");
     int opcion;
-        cout<<"\n*********** SISTEMA DE GESTION PARA LIBRERIAS ***********\n\t\t Listado de libros\n";
+        cout<<"\n***** SISTEMA DE GESTION PARA LIBRERIAS *****\n\t\t Listado de libros\n";
         cout<<"\n>>Selecciona una opcion para ver los libros:\n";
         cout<<"1. Ver todos los libros \n2. Ver por genero \n3. Buscar libro por ISBN \n4. Volver al menu principal";
         cout<<"\n\nSeleccion : ";
@@ -351,7 +348,7 @@ void menu1() {
 
 void menu2() {
     int opcion;
-        cout<<"\n*********** SISTEMA DE GESTION PARA LIBRERIAS ***********\n\t\t Gestion de libros\n";
+        cout<<"\n***** SISTEMA DE GESTION PARA LIBRERIAS *****\n\t\t Gestion de libros\n";
         cout<<"\n>>Selecciona una opcion para gestionar los libros:\n";
         cout<<"1. Agregar un nuevo libro \n2. Eliminar un libro \n3. Modificar un libro \n4. Volver al menu principal";
         cout<<"\n\nSeleccion : ";
@@ -388,19 +385,52 @@ void menu2() {
 
 }
 
-void menu3() {
+/*void menu3() {
     int opcion;
-        cout<<"\n********* SISTEMA DE GESTION PARA LIBRERIAS *********\n\t\t Simulador de compra\n";
+        cout<<"\n**** SISTEMA DE GESTION PARA LIBRERIAS ****\n\t\t Simulador de compra\n";
         cout<<"\n>>Bienvenido al simulador de compra. Selecciona una opcion:\n";
         cout<<"1. Agregar un libro al carrito \n2. Eliminar un libro del carrito";
         cout<<"\nSeleccion : ";
         cin>>opcion;
+}*/
+
+void menu3() {
+    int opcion;
+    cout << "\n**** SISTEMA DE GESTION PARA LIBRERIAS ****\n\t\t Simulador de compra\n";
+    cout << "\n>>Bienvenido al simulador de compra. Selecciona una opcion:\n";
+    cout << "1. Agregar un libro al carrito \n2. Mostrar carrito \n3. Eliminar un libro del carrito \n4. Volver al menu principal";
+    cout << "\nSeleccion : ";
+    cin >> opcion;
+
+    switch (opcion) {
+    case 1:
+        //agregarAlCarrito();
+        break;
+
+    case 2:
+       // mostrarCarrito();
+        break;
+
+    case 3:
+        // Código para eliminar un libro del carrito (implementación adicional)
+        break;
+
+    case 4:
+        menuPrincipal();
+        break;
+
+    default:
+        cout << "Opcion invalida. Ingrese otra opcion.";
+        getch();
+        system("cls");
+        menu3();
+    }
 }
 
 void menuPrincipal() {
 system("cls");
 int opcion;
-        cout<<"\n*********** SISTEMA DE GESTION PARA LIBRERIAS ***********\n";
+        cout<<"\n***** SISTEMA DE GESTION PARA LIBRERIAS *****\n";
         cout<<"\n>>Bienvenido. Eliga una opcion para comenzar:\n";
         cout<<"1. Listado de libros \n2. Gestionar libros \n3. Simulador de compra \n4. Salir";
         cout<<"\n\nSeleccion : ";
@@ -433,10 +463,51 @@ int opcion;
         }
 }
 
-int main() {
 
-    menuPrincipal();
+vector<libro*> carrito; // Nuevo vector para almacenar libros en el carrito
+
+// Función para mostrar el contenido del carrito
+void mostrarCarrito() {
+    if (carrito.empty()) {
+        cout << "El carrito esta vacio." << endl;
+        getch();
+        menu3(); // Redirige al menú de simulador de compra
+    } else {
+        cout << "Contenido del carrito:" << endl;
+        imprimirLibros(carrito);
+        cout << "Presiona enter para volver al menu de simulador de compra.";
+        getch();
+        menu3();
+    }
+}
+
+// Función para agregar un libro al carrito
+void agregarAlCarrito() {
+    int indice;
+    cout << "Ingresa el numero de libro que deseas agregar al carrito: ";
+    cin >> indice;
+
+    if (indice >= 0 && indice < v.size()) {
+        carrito.push_back(v[indice]);
+        cout << "Libro agregado al carrito exitosamente.\n";
+    } else {
+        cout << "Numero de libro invalido." << endl;
+    }
     getch();
+    menu3();
+}
 
-    return 0;
+// Función para calcular el promedio
+double calcularPromedio(double lista[], int longitud) {
+    double suma = 0.0;
+    for (int i = 0; i < longitud; i++) {
+        suma += lista[i];
+    }
+    double promedio = suma / longitud;
+
+    return promedio;
+}
+
+int main() {
+    menuPrincipal();
 }
