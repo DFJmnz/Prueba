@@ -132,20 +132,14 @@ int libro::numeroLibro = 0;
 
 //Prototipo de funcion
 void menuPrincipal();
-
 void menu1();
+void menu2();
+void menu3();
 void imprimirLibros(vector<libro*> v);
 double calcularPromedio(double lista[], int longitud);
 
-void menu2();
-
-void menu3();
-
-
 vector<libro*> v;
 vector<libro*> carrito; // Nuevo vector para almacenar libros en el carrito
-
-
 
 /*-------------------------- MENÚ 1 (BUSCADOR DE LIBROS) Y SUS FUNCIONES --------------------------*/
 void listadoLibros(vector<libro*> v) {
@@ -161,15 +155,22 @@ void listadoLibros(vector<libro*> v) {
 }
 
 float calcularPromedioPags() {
-    float suma = 0.0;
+     if (v.empty()) {
+    cout << "\nLa lista esta vacia.";
+    getch();
+    menu1();
+    } else {
+  float suma = 0.0;
     for (int i = 0; i < v.size(); i++) {
         suma += v[i]->getNumPaginas();
     }
     
     float promedioPags = suma / v.size();
     cout << "El promedio de paginas de todos los libros es: " << promedioPags << "\n\n";
+    
+    }
 }
-
+   
 void imprimirLibros(vector<libro*> v) {
     for(libro* L: v) {
         cout << "Titulo: " << L->getTitulo() << endl;
@@ -182,8 +183,6 @@ void imprimirLibros(vector<libro*> v) {
         cout << "Precio: " << L->getPrecio() << endl;
         cout << endl;
     } 
-
-    calcularPromedioPags();
 }
 
 void imprimirLibroGenero(vector<libro*> v) {
@@ -195,8 +194,9 @@ void imprimirLibroGenero(vector<libro*> v) {
 
     // Filtrar la lista de libros según la opción seleccionada
     vector<libro*> librosPorGenero;
+    system("cls");
     switch (opcion) {
-        system("cls");
+
         case 1:
             copy_if(v.begin(), v.end(), back_inserter(librosPorGenero),
                     [](const libro* L) { return strcmp(L->getGenero(), "Ciencias de la computacion") == 0; });
@@ -281,45 +281,51 @@ void imprimirLibroISBN() {
 }
 
 void menu1() {
+    system("cls");
     int opcion;
         cout<<"\n***** SISTEMA DE GESTION PARA LIBRERIAS *****\n\t\t Buscador de libros\n";
         cout<<"\n>>Selecciona una opcion para ver los libros:\n";
-        cout<<"1. Ver todos los libros \n2. Buscar por genero \n3. Buscar libro por ISBN \n4. Volver al menu principal";
+        cout<<"1. Ver todos los libros \n2. Buscar por genero \n3. Buscar libro por ISBN \n4. Promedio de numero de paginas de todos los libros \n5. Volver al menu principal";
         cout<<"\n\nSeleccion : ";
         cin>>opcion;
 
         switch(opcion) {
             case 1:
             listadoLibros(v);
-            system("cls");
             menu1();
             break;
 
             case 2:
             imprimirLibroGenero(v);
-            system("cls");
             menu1();
             break;
 
             case 3:
             imprimirLibroISBN();
-            system("cls");
             menu1();
             break;
 
             case 4:
-            exit(0);
+            calcularPromedioPags();
+            getch();
+            menu1();
+            break;
+
+            case 5:
+            menuPrincipal();
+            break;
 
             default:
             cout << "Opcion invalida. Ingrese otra opcion.";
             getch();
-            system("cls");
             menu1();
+            break;
         }
 }
 
 /*------------------------ MENÚ 2 (GESTIONAR LIBROS) Y SUS FUNCIONES ---------------------------*/
 void agregarLibro() {
+    system("cls");
     char titulo[150];
     char autor[150];
     char genero[100];
@@ -347,11 +353,9 @@ void agregarLibro() {
 
     cout << "Ingrese el precio del libro: ";
     cin >> precio;
-    cin.ignore();
 
     cout << "Ingrese el numero de paginas del libro: ";
     cin >> numPaginas;
-    cin.ignore();
 
     libro* nuevoLibro = new libro(titulo, autor, genero, anioPublic, editorial, precio, numPaginas);
     v.push_back(nuevoLibro);
@@ -361,6 +365,7 @@ void agregarLibro() {
 }
 
 void eliminarLibro() {
+    system("cls");
     string isbnEliminar;
     cout << "Ingrese el ISBN del libro que desea eliminar: ";
     cin >> isbnEliminar;
@@ -382,6 +387,7 @@ void eliminarLibro() {
 }
 
 void modificarLibro() {
+    system("cls");
     string isbnModificar;
     cout << "Ingrese el ISBN del libro que desea modificar: ";
     cin >> isbnModificar;
@@ -496,6 +502,7 @@ void menu2() {
 
             case 4:
             menuPrincipal();
+            break;
 
             default:
             cout << "Opcion invalida. Ingrese otra opcion.";
@@ -583,7 +590,6 @@ void menu3() {
 
     case 3:
         eliminarDelCarrito();
-        system("cls");
         menu3();
         break;
 
@@ -594,7 +600,6 @@ void menu3() {
     default:
         cout << "Opcion invalida. Ingrese otra opcion.";
         getch();
-        system("cls");
         menu3();
     }
 }
@@ -637,7 +642,6 @@ void menuPrincipal() {
         }
 }
 
-// Función para calcular el promedio de precios
 int main() {
     menuPrincipal();
 }
