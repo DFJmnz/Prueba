@@ -2,7 +2,7 @@
 #include <vector>
 #include <iomanip>  // Necesario para std::setw y std::setfill
 #include <conio.h>
-#include <cstring>  // Necesario para funciones relacionadas con cadenas de caracteres
+#include <string.h>  // Necesario para funciones relacionadas con cadenas de caracteres
 #include <algorithm>
 
 using namespace std;
@@ -15,13 +15,13 @@ private:
     int anioPublic;
     string ISBN;
     char editorial[100];
-    float precio;
+    int precio;
     int numPaginas;
     static int numeroLibro;
 
 public:
    libro(const char titulo[], const char autor[], const char genero[], int anioPublic, 
-        const char editorial[], float precio, int numPaginas) 
+        const char editorial[], int precio, int numPaginas) 
         : anioPublic(anioPublic), numPaginas(numPaginas) {
 
         // Copiar títulos, autores y géneros a los arreglos de la clase
@@ -41,69 +41,69 @@ public:
         ISBN = generarISBN();
     }
 
-//Getters
-const char* getTitulo() {
-    return titulo;
+    //Getters
+    const char* getTitulo() {
+        return titulo;
     }
 
-const char* getAutor() {
-    return autor;
+    const char* getAutor() {
+        return autor;
     }
 
-const char* getGenero() {
-    return genero;
+    const char* getGenero() {
+        return genero;
     }
 
-int getAnioPublic() {
-    return anioPublic;
+    int getAnioPublic() {
+        return anioPublic;
     }
 
-string getISBN() const {
-    return ISBN;
-}
-
-const char* getEditorial() {
-    return editorial;
+    string getISBN() const {
+        return ISBN;
     }
 
-double getPrecio() {
-    return precio;
+    const char* getEditorial() {
+        return editorial;
     }
 
-int getNumPaginas() {
-    return numPaginas;
+    int getPrecio() {
+        return precio;
     }
 
-// Setters
-void setTitulo(const char* nuevoTitulo) {
+    int getNumPaginas() {
+        return numPaginas;
+    }
+
+    // Setters
+    void setTitulo(const char* nuevoTitulo) {
         strncpy(titulo, nuevoTitulo, sizeof(titulo) - 1);
         titulo[sizeof(titulo) - 1] = '\0';  // Ensure null termination
     }
 
-void setAutor(const char* nuevoAutor) {
+    void setAutor(const char* nuevoAutor) {
         strncpy(autor, nuevoAutor, sizeof(autor) - 1);
         autor[sizeof(autor) - 1] = '\0';
     }
 
-void setGenero(const char* nuevoGenero) {
+    void setGenero(const char* nuevoGenero) {
         strncpy(genero, nuevoGenero, sizeof(genero) - 1);
         genero[sizeof(genero) - 1] = '\0';
     }
 
-void setAnioPublic(int nuevoAnio) {
+    void setAnioPublic(int nuevoAnio) {
         anioPublic = nuevoAnio;
     }
 
-void setEditorial(const char* nuevaEditorial) {
+    void setEditorial(const char* nuevaEditorial) {
         strncpy(editorial, nuevaEditorial, sizeof(editorial) - 1);
         editorial[sizeof(editorial) - 1] = '\0';
     }
 
-void setPrecio(double nuevoPrecio) {
+    void setPrecio(int nuevoPrecio) {
         precio = nuevoPrecio;
     }
 
-void setNumPaginas(int nuevoNumPaginas) {
+    void setNumPaginas(int nuevoNumPaginas) {
         numPaginas = nuevoNumPaginas;
     }
     
@@ -121,34 +121,38 @@ void setNumPaginas(int nuevoNumPaginas) {
 
         return isbn;
     }
+
+    bool compararISBN(const string& isbnComparar) const {
+        return ISBN == isbnComparar;
+    }
+
 };
 
 int libro::numeroLibro = 0;
 
 //Prototipo de funcion
 void menuPrincipal();
+
 void menu1();
+void imprimirLibros(vector<libro*> v);
+double calcularPromedio(double lista[], int longitud);
+
 void menu2();
+
+
 void menu3();
+
+
+
 vector<libro*> v;
+vector<libro*> carrito; // Nuevo vector para almacenar libros en el carrito
 
-void imprimirLibros(vector<libro*> v) {
-    for(libro* L: v) {
-       cout << "Titulo: " << L->getTitulo() << endl;
-        cout << "Autor: " << L->getAutor()<< endl;
-        cout << "Genero: " << L->getGenero() << endl;
-        cout << "# Paginas: " << L->getNumPaginas() << endl;
-        cout << "Anio de publicacion: " << L->getAnioPublic() << endl;
-        cout << "Editorial: " << L->getEditorial() << endl;
-        cout << "ISBN: " << L->getISBN()<< endl;
-        cout << "Precio: " << L->getPrecio()<< endl;
-        cout << endl;
-    } 
-}
 
+
+/*------------------------ MENÚ 1 Y SUS FUNCIONES ---------------------------*/
 void listadoLibros(vector<libro*> v) {
     if (v.empty()) {
-    cout << "El listado esta vacio.";
+    cout << "La lista esta vacio.";
     getch();
     menu1();
     } else {imprimirLibros(v);
@@ -157,16 +161,108 @@ void listadoLibros(vector<libro*> v) {
     }
 }
 
+void imprimirLibros(vector<libro*> v) {
+    for(libro* L: v) {
+       cout << "Titulo: " << L->getTitulo() << endl;
+        cout << "Autor: " << L->getAutor() << endl;
+        cout << "Genero: " << L->getGenero() << endl;
+        cout << "# Paginas: " << L->getNumPaginas() << endl;
+        cout << "Anio de publicacion: " << L->getAnioPublic() << endl;
+        cout << "Editorial: " << L->getEditorial() << endl;
+        cout << "ISBN: " << L->getISBN() << endl;
+        cout << "Precio: " << L->getPrecio() << endl;
+        cout << endl;
+    } 
+}
+
+//void generoLibros(){}
+
+libro* buscarLibroPorISBN(const string& isbn, const vector<libro*>& v) {
+    auto it = find_if(v.begin(), v.end(), [isbn](const libro* L) {
+        return L->compararISBN(isbn);
+    });
+
+    if (it != v.end()) {
+       cout << "Libro encontrado. ";
+        return *it;  // Retorna el puntero al libro si se encuentra
+    } else {
+        cout << "No se encontró un libro con ese ISBN." << endl;
+        return nullptr;  // Retorna nullptr si no se encuentra el libro
+    }
+}
+
+void imprimirLibroISBN(){
+    string isbn;
+    cout << "Ingrese el ISBN del libro que desea buscar: ";
+    cin >> isbn;
+    
+    libro* libroEncontrado = buscarLibroPorISBN(isbn, v);
+
+        if (libroEncontrado != nullptr) {
+            cout << "Detalles:\n";
+            cout << "Titulo: " << libroEncontrado->getTitulo() << endl;
+            cout << "Autor: " << libroEncontrado->getAutor() << endl;
+            cout << "Genero: " << libroEncontrado->getGenero() << endl;
+            cout << "# Paginas: " << libroEncontrado->getNumPaginas() << endl;
+            cout << "Anio de publicacion: " << libroEncontrado->getAnioPublic() << endl;
+            cout << "Editorial: " << libroEncontrado->getEditorial() << endl;
+            cout << "ISBN: " << libroEncontrado->getISBN() << endl;
+            cout << "Precio: " << libroEncontrado->getPrecio() << endl;
+            cout << endl;
+        }
+
+    cout << "Presione cualquier tecla para volver al buscador.\n";
+    getch();
+    
+}
+
+void menu1() {
+    system("cls");
+    int opcion;
+        cout<<"\n***** SISTEMA DE GESTION PARA LIBRERIAS *****\n\t\t Buscador de libros\n";
+        cout<<"\n>>Selecciona una opcion para ver los libros:\n";
+        cout<<"1. Ver todos los libros \n2. Buscar por genero \n3. Buscar libro por ISBN \n4. Volver al menu principal";
+        cout<<"\n\nSeleccion : ";
+        cin>>opcion;
+
+        switch(opcion) {
+            case 1:
+            listadoLibros(v);
+            menu1();
+            break;
+
+            case 2:
+            //generoLibros();
+            break;
+
+            case 3:
+            imprimirLibroISBN();
+            menu1();
+            break;
+
+            case 4:
+            menuPrincipal();
+
+            default:
+            cout << "Opcion invalida. Ingrese otra opcion.";
+            getch();
+            system("cls");
+            menu1();
+        }
+
+}
+
+/*------------------------ MENÚ 2 Y SUS FUNCIONES ---------------------------*/
 void agregarLibro() {
     char titulo[150];
     char autor[150];
     char genero[100];
     int anioPublic;
     char editorial[100];
-    float precio;
+    int precio;
     int numPaginas;
 
-    cout << "Ingrese el título del libro: ";
+    cout << "Ingrese el titulo del libro: ";
     cin.ignore(); //
     cin.getline(titulo, sizeof(titulo));
 
@@ -176,7 +272,7 @@ void agregarLibro() {
     cout << "Ingrese el genero del libro: ";
     cin.getline(genero, sizeof(genero));
 
-    cout << "Ingrese el año de publicacion del libro: ";
+    cout << "Ingrese el anio de publicacion del libro: ";
     cin >> anioPublic;
 
     cout << "Ingrese la editorial del libro: ";
@@ -186,13 +282,13 @@ void agregarLibro() {
     cout << "Ingrese el precio del libro: ";
     cin >> precio;
 
-    cout << "Ingrese el numero de páginas del libro: ";
+    cout << "Ingrese el numero de paginas del libro: ";
     cin >> numPaginas;
 
     libro* nuevoLibro = new libro(titulo, autor, genero, anioPublic, editorial, precio, numPaginas);
     v.push_back(nuevoLibro);
 
-    cout << "Libro agregado exitosamente.\n";
+    cout << "\nLibro agregado exitosamente. Presione cualquier tecla para volver al menu.\n";
     getch();
 }
 
@@ -215,7 +311,7 @@ void eliminarLibro() {
 
         cout << "Libro eliminado exitosamente.\n";
     } else {
-        cout << "No se encontró un libro con ese ISBN.\n";
+        cout << "No se encontro un libro con ese ISBN.\n";
     }
 
     getch();
@@ -236,7 +332,7 @@ void modificarLibro() {
     if (it != v.end()) {
         int opcion;
         cout << "Seleccione el campo que desea modificar:\n";
-        cout << "1. Título\n 2. Autor\n 3. Género\n 4. Año de Publicación\n 5. Editorial\n 6. Precio\n 7. Número de Páginas\n 8. Cancelar";
+        cout << "1. Titulo\n 2. Autor\n 3. Genero\n 4. Anio de Publicacion\n 5. Editorial\n 6. Precio\n 7. Numero de Paginas\n 8. Cancelar";
         cout << "Seleccion: ";
         cin >> opcion;
 
@@ -313,39 +409,6 @@ void modificarLibro() {
     getch();
 }
 
-void menu1() {
-    system("cls");
-    int opcion;
-        cout<<"\n***** SISTEMA DE GESTION PARA LIBRERIAS *****\n\t\t Listado de libros\n";
-        cout<<"\n>>Selecciona una opcion para ver los libros:\n";
-        cout<<"1. Ver todos los libros \n2. Ver por genero \n3. Buscar libro por ISBN \n4. Volver al menu principal";
-        cout<<"\n\nSeleccion : ";
-        cin>>opcion;
-
-        switch(opcion) {
-            case 1:
-            listadoLibros(v);
-            menu1();
-            break;
-
-            case 2:
-            break;
-
-            case 3:
-            break;
-
-            case 4:
-            menuPrincipal();
-
-            default:
-            cout << "Opcion invalida. Ingrese otra opcion.";
-            getch();
-            system("cls");
-            menu1();
-        }
-
-}
-
 void menu2() {
     int opcion;
         cout<<"\n***** SISTEMA DE GESTION PARA LIBRERIAS *****\n\t\t Gestion de libros\n";
@@ -357,19 +420,19 @@ void menu2() {
         switch(opcion) {
             case 1:
             agregarLibro();
-            getch();
+            system("cls");
             menu2();
             break;
 
             case 2:
             eliminarLibro();
-            getch();
+            system("cls");
             menu2();
             break;
 
             case 3:
             modificarLibro();
-            getch();
+            system("cls");
             menu2();
             break;
 
@@ -385,14 +448,51 @@ void menu2() {
 
 }
 
-/*void menu3() {
-    int opcion;
-        cout<<"\n**** SISTEMA DE GESTION PARA LIBRERIAS ****\n\t\t Simulador de compra\n";
-        cout<<"\n>>Bienvenido al simulador de compra. Selecciona una opcion:\n";
-        cout<<"1. Agregar un libro al carrito \n2. Eliminar un libro del carrito";
-        cout<<"\nSeleccion : ";
-        cin>>opcion;
-}*/
+/*------------------------ MENÚ 3 Y SUS FUNCIONES ---------------------------*/
+void agregarAlCarrito() {
+   string isbn;
+    cout << "Ingresa el ISBN del libro que deseas agregar al carrito: ";
+    cin >> isbn;
+
+    libro* libroEncontrado = buscarLibroPorISBN(isbn, v);
+
+    if (libroEncontrado != nullptr) {
+        // Agregar el libro al carrito
+        carrito.push_back(libroEncontrado);
+        cout << "Libro agregado al carrito exitosamente." << endl;
+    }
+  
+    /*// Buscar el libro en el vector usando la función compararISBN
+    auto it = find_if(v.begin(), v.end(), [isbn](const libro* L) {
+        return L->compararISBN(isbn);
+    });
+
+    // Verificar si se encontró el libro
+    if (it != v.end()) {
+        // Agregar el libro al carrito
+        carrito.push_back(*it);
+        cout << "Libro agregado al carrito exitosamente.\n";
+    } */
+
+    getch();
+    menu3();
+}
+
+void mostrarCarrito() {
+    if (carrito.empty()) {
+        cout << "El carrito esta vacio." << endl;
+        getch();
+        menu3(); // Redirige al menú de simulador de compra
+    } else {
+        cout << "Contenido del carrito:" << endl;
+        imprimirLibros(carrito);
+        cout << "Presiona enter para volver al menu de simulador de compra.";
+        getch();
+        menu3();
+    }
+}
+
+//void eliminarDelCarrito() {}
 
 void menu3() {
     int opcion;
@@ -404,15 +504,15 @@ void menu3() {
 
     switch (opcion) {
     case 1:
-        //agregarAlCarrito();
+        agregarAlCarrito();
         break;
 
     case 2:
-       // mostrarCarrito();
+        //mostrarCarrito();
         break;
 
     case 3:
-        // Código para eliminar un libro del carrito (implementación adicional)
+        //Código para eliminar un libro del carrito (implementación adicional)
         break;
 
     case 4:
@@ -427,12 +527,13 @@ void menu3() {
     }
 }
 
+/*--------------------------- MENÚ PRINCIPAL ------------------------------*/
 void menuPrincipal() {
-system("cls");
-int opcion;
+    system("cls");
+    int opcion;
         cout<<"\n***** SISTEMA DE GESTION PARA LIBRERIAS *****\n";
         cout<<"\n>>Bienvenido. Eliga una opcion para comenzar:\n";
-        cout<<"1. Listado de libros \n2. Gestionar libros \n3. Simulador de compra \n4. Salir";
+        cout<<"1. Buscador de libros \n2. Gestionar libros \n3. Simulador de compra \n4. Salir";
         cout<<"\n\nSeleccion : ";
         cin>>opcion;
 
@@ -463,41 +564,7 @@ int opcion;
         }
 }
 
-
-vector<libro*> carrito; // Nuevo vector para almacenar libros en el carrito
-
-// Función para mostrar el contenido del carrito
-void mostrarCarrito() {
-    if (carrito.empty()) {
-        cout << "El carrito esta vacio." << endl;
-        getch();
-        menu3(); // Redirige al menú de simulador de compra
-    } else {
-        cout << "Contenido del carrito:" << endl;
-        imprimirLibros(carrito);
-        cout << "Presiona enter para volver al menu de simulador de compra.";
-        getch();
-        menu3();
-    }
-}
-
-// Función para agregar un libro al carrito
-void agregarAlCarrito() {
-    int indice;
-    cout << "Ingresa el numero de libro que deseas agregar al carrito: ";
-    cin >> indice;
-
-    if (indice >= 0 && indice < v.size()) {
-        carrito.push_back(v[indice]);
-        cout << "Libro agregado al carrito exitosamente.\n";
-    } else {
-        cout << "Numero de libro invalido." << endl;
-    }
-    getch();
-    menu3();
-}
-
-// Función para calcular el promedio
+// Función para calcular el promedio de precios
 double calcularPromedio(double lista[], int longitud) {
     double suma = 0.0;
     for (int i = 0; i < longitud; i++) {
