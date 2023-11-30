@@ -149,13 +149,14 @@ vector<libro*> carrito; // Nuevo vector para almacenar libros en el carrito
 
 
 
-/*------------------------ MENÚ 1 Y SUS FUNCIONES ---------------------------*/
+/*-------------------------- MENÚ 1 (BUSCADOR DE LIBROS) Y SUS FUNCIONES --------------------------*/
 void listadoLibros(vector<libro*> v) {
     if (v.empty()) {
     cout << "La lista esta vacia.";
     getch();
-    menu1();
-    } else {imprimirLibros(v);
+    menuPrincipal();
+    } else {
+    imprimirLibros(v);
     cout << "Presiona enter para volver al menu.";
     getch();
     }
@@ -299,12 +300,13 @@ void menu1() {
             default:
             cout << "Opcion invalida. Ingrese otra opcion.";
             getch();
+	    system("cls");
             menu1();
         }
 
 }
 
-/*------------------------ MENÚ 2 Y SUS FUNCIONES ---------------------------*/
+/*------------------------ MENÚ 2 (GESTIONAR LIBROS) Y SUS FUNCIONES ---------------------------*/
 void agregarLibro() {
     char titulo[150];
     char autor[150];
@@ -491,54 +493,42 @@ void menu2() {
 
 }
 
-/*------------------------ MENÚ 3 Y SUS FUNCIONES ---------------------------*/
+/*-------------------- MENÚ 3 (SIMULADOR DE COMPRA) Y SUS FUNCIONES ---------------------------*/
 void agregarAlCarrito() {
-   string isbn;
-    cout << "Ingresa el ISBN del libro que deseas agregar al carrito: ";
+    string isbn;
+    system("cls");
+    cout << "\nIngresa el ISBN del libro que deseas agregar al carrito: ";
     cin >> isbn;
 
-    libro* libroEncontrado = buscarLibroPorISBN(isbn, v);
+    libro* libroEncontrado = comparadorISBN(isbn, v);
 
     if (libroEncontrado != nullptr) {
-        // Agregar el libro al carrito
-        carrito.push_back(libroEncontrado);
-        cout << "Libro agregado al carrito exitosamente." << endl;
+        carrito.push_back(libroEncontrado); //Agrega el libro al carrito
+        cout << " Agregado al carrito exitosamente." << endl;
     }
   
-    /*// Buscar el libro en el vector usando la función compararISBN
-    auto it = find_if(v.begin(), v.end(), [isbn](const libro* L) {
-        return L->compararISBN(isbn);
-    });
-
-    // Verificar si se encontró el libro
-    if (it != v.end()) {
-        // Agregar el libro al carrito
-        carrito.push_back(*it);
-        cout << "Libro agregado al carrito exitosamente.\n";
-    } */
-
+    cout << "\nPresione cualquier tecla para continuar.";
     getch();
-    menu3();
+    
+    //cout << "Presione 's' si desea agregar otro libro o 'n' para volver al menu"
 }
 
 void mostrarCarrito() {
     if (carrito.empty()) {
-        cout << "El carrito esta vacio." << endl;
+        cout << "El carrito esta vacio. Presiona enter para volver al simulador de compra" << endl;
         getch();
-        menu3(); // Redirige al menú de simulador de compra
     } else {
-        cout << "Contenido del carrito:" << endl;
+        system("cls");
+        cout << ">> Contenido del carrito\n" << endl;
         imprimirLibros(carrito);
-        cout << "Presiona enter para volver al menu de simulador de compra.";
+        cout << "Presiona enter para volver al simulador de compra.";
         getch();
-        menu3();
     }
 }
 
 //void eliminarDelCarrito() {}
 
 void menu3() {
-    system("cls");
     int opcion;
     cout << "\n**** SISTEMA DE GESTION PARA LIBRERIAS ****\n\t\t Simulador de compra\n";
     cout << "\n>>Bienvenido al simulador de compra. Selecciona una opcion:\n";
@@ -549,14 +539,20 @@ void menu3() {
     switch (opcion) {
     case 1:
         agregarAlCarrito();
+        system("cls");
+        menu3();
         break;
 
     case 2:
-        //mostrarCarrito();
+        mostrarCarrito();
+        system("cls");
+        menu3();
         break;
 
     case 3:
         //Código para eliminar un libro del carrito (implementación adicional)
+        system("cls");
+        menu3();
         break;
 
     case 4:
