@@ -5,6 +5,7 @@
 #include <iomanip>  // Necesario para std::setw y std::setfill
 #include <conio.h>
 #include <cstring>  // Necesario para funciones relacionadas con cadenas de caracteres
+#include <algorithm>
 
 using namespace std;
 
@@ -22,7 +23,7 @@ private:
 
 public:
    libro(const char titulo[], const char autor[], const char genero[], int anioPublic, 
-        const char editorial[], double precio, int numPaginas) 
+        const char editorial[], float precio, int numPaginas) 
         : anioPublic(anioPublic), numPaginas(numPaginas) {
 
         // Copiar títulos, autores y géneros a los arreglos de la clase
@@ -59,9 +60,9 @@ int getAnioPublic() {
     return anioPublic;
     }
 
-string getISBN() {
+string getISBN() const {
     return ISBN;
-    }
+}
 
 const char* getEditorial() {
     return editorial;
@@ -74,6 +75,40 @@ double getPrecio() {
 int getNumPaginas() {
     return numPaginas;
     }
+
+// Setters
+void setTitulo(const char* nuevoTitulo) {
+        strncpy(titulo, nuevoTitulo, sizeof(titulo) - 1);
+        titulo[sizeof(titulo) - 1] = '\0';  // Ensure null termination
+    }
+
+void setAutor(const char* nuevoAutor) {
+        strncpy(autor, nuevoAutor, sizeof(autor) - 1);
+        autor[sizeof(autor) - 1] = '\0';
+    }
+
+void setGenero(const char* nuevoGenero) {
+        strncpy(genero, nuevoGenero, sizeof(genero) - 1);
+        genero[sizeof(genero) - 1] = '\0';
+    }
+
+void setAnioPublic(int nuevoAnio) {
+        anioPublic = nuevoAnio;
+    }
+
+void setEditorial(const char* nuevaEditorial) {
+        strncpy(editorial, nuevaEditorial, sizeof(editorial) - 1);
+        editorial[sizeof(editorial) - 1] = '\0';
+    }
+
+void setPrecio(double nuevoPrecio) {
+        precio = nuevoPrecio;
+    }
+
+void setNumPaginas(int nuevoNumPaginas) {
+        numPaginas = nuevoNumPaginas;
+    }
+    
 
     string generarISBN() {
         // Obtener el año de publicación con 4 dígitos
@@ -164,6 +199,123 @@ void agregarLibro() {
     getch();
 }
 
+void eliminarLibro() {
+    // Get ISBN of the book to delete
+    string isbnEliminar;
+    cout << "Ingrese el ISBN del libro que desea eliminar: ";
+    cin >> isbnEliminar;
+
+    // Find the book in the vector
+    auto it = find_if(v.begin(), v.end(), [isbnEliminar](const libro* L) {
+        return L->getISBN() == isbnEliminar;
+    });
+
+    // Check if the book is found
+    if (it != v.end()) {
+        // Delete the book and remove it from the vector
+        delete *it;
+        v.erase(it);
+
+        cout << "Libro eliminado exitosamente.\n";
+    } else {
+        cout << "No se encontró un libro con ese ISBN.\n";
+    }
+
+    getch();
+}
+
+void modificarLibro() {
+    // Get ISBN of the book to modify
+    string isbnModificar;
+    cout << "Ingrese el ISBN del libro que desea modificar: ";
+    cin >> isbnModificar;
+
+    // Find the book in the vector
+    auto it = find_if(v.begin(), v.end(), [isbnModificar](const libro* L) {
+        return L->getISBN() == isbnModificar;
+    });
+
+    // Check if the book is found
+    if (it != v.end()) {
+        int opcion;
+        cout << "Seleccione el campo que desea modificar:\n";
+        cout << "1. Título\n 2. Autor\n 3. Género\n 4. Año de Publicación\n 5. Editorial\n 6. Precio\n 7. Número de Páginas\n 8. Cancelar";
+        cout << "Seleccion: ";
+        cin >> opcion;
+
+        // Update the selected field based on user input
+        switch (opcion) {
+            case 1: 
+                char nuevoTitulo[150];
+                cout << "Ingrese el nuevo título: ";
+                cin.ignore();
+                cin.getline(nuevoTitulo, sizeof(nuevoTitulo));
+                (*it)->setTitulo(nuevoTitulo);
+                break;
+            
+            case 2: 
+                char nuevoAutor[150];
+                cout << "Ingrese el nuevo autor: ";
+                cin.ignore();
+                cin.getline(nuevoAutor, sizeof(nuevoAutor));
+                (*it)->setAutor(nuevoAutor);
+                break;       
+            
+            case 3:
+                char nuevoGenero[150];
+                cout << "Ingrese el nuevo genero: ";
+                cin.ignore();
+                cin.getline(nuevoGenero, sizeof(nuevoGenero));
+                (*it)->setGenero(nuevoGenero);
+                break;                       
+
+            case 4:
+                int nuevoAnio;
+                cout << "Ingrese el nuevo anio de publicacion: ";
+                cin >> nuevoAnio;
+                (*it)->setAnioPublic(nuevoAnio);
+                break;
+
+            case 5:
+                char nuevaEditorial[100];
+                cout << "Ingrese la nueva editorial: ";
+                cin.ignore();
+                cin.getline(nuevaEditorial, sizeof(nuevaEditorial));
+                (*it)->setEditorial(nuevaEditorial);
+                break;
+
+            case 6:
+                int nuevoPrecio;
+                cout << "Ingrese el nuevo precio: ";
+                cin >> nuevoPrecio;
+                (*it)->setPrecio(nuevoPrecio);
+                break;
+
+            case 7:
+                int nuevoNumPaginas;
+                cout << "Ingrese el nuevo numero de paginas: ";
+                cin >> nuevoNumPaginas;
+                (*it)->setNumPaginas(nuevoNumPaginas);
+                break;
+
+            case 8:
+            menu2();
+            break;
+
+            default:
+                cout << "Opción no válida.\n";
+                getch();
+                return;
+        }
+
+        cout << "Libro modificado exitosamente.\n";
+    } else {
+        cout << "No se encontró un libro con ese ISBN.\n";
+    }
+
+    getch();
+}
+
 void menu1() {
     system("cls");
     int opcion;
@@ -213,9 +365,15 @@ void menu2() {
             break;
 
             case 2:
+            eliminarLibro();
+            getch();
+            menu2();
             break;
 
             case 3:
+            modificarLibro();
+            getch();
+            menu2();
             break;
 
             case 4:
