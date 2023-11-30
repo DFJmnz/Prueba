@@ -150,9 +150,9 @@ vector<libro*> carrito; // Nuevo vector para almacenar libros en el carrito
 /*-------------------------- MENÚ 1 (BUSCADOR DE LIBROS) Y SUS FUNCIONES --------------------------*/
 void listadoLibros(vector<libro*> v) {
     if (v.empty()) {
-    cout << "La lista esta vacia.";
+    cout << "\nLa lista esta vacia.";
     getch();
-    menuPrincipal();
+    menu1();
     } else {
     imprimirLibros(v);
     cout << "Presiona enter para volver al menu.";
@@ -160,9 +160,19 @@ void listadoLibros(vector<libro*> v) {
     }
 }
 
+float calcularPromedioPags() {
+    float suma = 0.0;
+    for (int i = 0; i < v.size(); i++) {
+        suma += v[i]->getNumPaginas();
+    }
+    
+    float promedioPags = suma / v.size();
+    cout << "El promedio de paginas de todos los libros es: " << promedioPags << "\n\n";
+}
+
 void imprimirLibros(vector<libro*> v) {
     for(libro* L: v) {
-       cout << "Titulo: " << L->getTitulo() << endl;
+        cout << "Titulo: " << L->getTitulo() << endl;
         cout << "Autor: " << L->getAutor() << endl;
         cout << "Genero: " << L->getGenero() << endl;
         cout << "# Paginas: " << L->getNumPaginas() << endl;
@@ -172,6 +182,8 @@ void imprimirLibros(vector<libro*> v) {
         cout << "Precio: " << L->getPrecio() << endl;
         cout << endl;
     } 
+
+    calcularPromedioPags();
 }
 
 void imprimirLibroGenero(vector<libro*> v) {
@@ -296,7 +308,7 @@ void menu1() {
             break;
 
             case 4:
-            menuPrincipal();
+            exit(0);
 
             default:
             cout << "Opcion invalida. Ingrese otra opcion.";
@@ -463,7 +475,7 @@ void menu2() {
         cout<<"\n***** SISTEMA DE GESTION PARA LIBRERIAS *****\n\t\t Gestion de libros\n";
         cout<<"\n>>Selecciona una opcion para gestionar los libros:\n";
         cout<<"1. Agregar un nuevo libro \n2. Eliminar un libro \n3. Modificar un libro \n4. Volver al menu principal";
-        cout<<"\n\nSeleccion : ";
+        cout<<"\n\nSeleccion: ";
         cin>>opcion;
 
         switch(opcion) {
@@ -503,10 +515,11 @@ void agregarAlCarrito() {
     libro* libroEncontrado = comparadorISBN(isbn, v);
 
     if (libroEncontrado != nullptr) {
-        carrito.push_back(libroEncontrado); //Agrega el libro al carrito
-        cout << " Agregado al carrito exitosamente." << endl;
+        if (count(carrito.begin(), carrito.end(), libroEncontrado) == false){
+            carrito.push_back(libroEncontrado); //Agrega el libro al carrito
+            cout << " Agregado al carrito exitosamente." << endl;
+        } else cout << "fuk u\n";
     }
-  
     cout << "\nPresione cualquier tecla para continuar.";
     getch();
     
@@ -537,8 +550,8 @@ void eliminarDelCarrito() {
     });
 
     if (it != carrito.end()) {
-        delete *it;
         carrito.erase(it);
+        delete *it;
 
         cout << "\nLibro eliminado exitosamente. Presione para volver al simulador de compra.\n";
         getch();
@@ -611,10 +624,11 @@ void menuPrincipal() {
             system("cls");
             menu3();
             break;
-
+       
             case 4:
             exit(0);
-
+            break;
+            
             default:
             cout << "Opcion invalida. Ingrese otra opcion.";
             getch();
@@ -624,16 +638,6 @@ void menuPrincipal() {
 }
 
 // Función para calcular el promedio de precios
-double calcularPromedio(double lista[], int longitud) {
-    double suma = 0.0;
-    for (int i = 0; i < longitud; i++) {
-        suma += lista[i];
-    }
-    double promedio = suma / longitud;
-
-    return promedio;
-}
-
 int main() {
     menuPrincipal();
 }
