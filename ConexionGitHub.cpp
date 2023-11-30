@@ -22,7 +22,7 @@ private:
 public:
    libro(const char titulo[], const char autor[], const char genero[], int anioPublic, 
         const char editorial[], float precio, int numPaginas) 
-        : anioPublic(anioPublic), numPaginas(numPaginas) {
+        : anioPublic(anioPublic), precio(precio), numPaginas(numPaginas) {
 
         // Copiar títulos, autores y géneros a los arreglos de la clase
         strncpy(this->titulo, titulo, sizeof(this->titulo) - 1);
@@ -230,7 +230,7 @@ void imprimirLibroGenero(vector<libro*> v) {
     getch();
 }
 
-libro* buscarLibroPorISBN(const string& isbn, const vector<libro*>& v) {
+libro* comparadorISBN(const string& isbn, const vector<libro*>& v) {
     auto it = find_if(v.begin(), v.end(), [isbn](const libro* L) {
         return L->compararISBN(isbn);
     });
@@ -246,10 +246,11 @@ libro* buscarLibroPorISBN(const string& isbn, const vector<libro*>& v) {
 
 void imprimirLibroISBN() {
     string isbn;
+    system("cls");
     cout << "Ingrese el ISBN del libro que desea buscar: ";
     cin >> isbn;
     
-    libro* libroEncontrado = buscarLibroPorISBN(isbn, v);
+    libro* libroEncontrado = comparadorISBN(isbn, v);
 
         if (libroEncontrado != nullptr) {
             cout << "Detalles:\n";
@@ -270,7 +271,6 @@ void imprimirLibroISBN() {
 }
 
 void menu1() {
-    system("cls");
     int opcion;
         cout<<"\n***** SISTEMA DE GESTION PARA LIBRERIAS *****\n\t\t Buscador de libros\n";
         cout<<"\n>>Selecciona una opcion para ver los libros:\n";
@@ -281,16 +281,19 @@ void menu1() {
         switch(opcion) {
             case 1:
             listadoLibros(v);
+            system("cls");
             menu1();
             break;
 
             case 2:
             imprimirLibroGenero(v);
+            system("cls");
             menu1();
             break;
 
             case 3:
             imprimirLibroISBN();
+            system("cls");
             menu1();
             break;
 
@@ -300,10 +303,9 @@ void menu1() {
             default:
             cout << "Opcion invalida. Ingrese otra opcion.";
             getch();
-	    system("cls");
+            system("cls");
             menu1();
         }
-
 }
 
 /*------------------------ MENÚ 2 (GESTIONAR LIBROS) Y SUS FUNCIONES ---------------------------*/
@@ -526,7 +528,26 @@ void mostrarCarrito() {
     }
 }
 
-//void eliminarDelCarrito() {}
+void eliminarDelCarrito() {
+    string isbnEliminar;
+    cout << "Ingrese el ISBN del libro que desea eliminar: ";
+    cin >> isbnEliminar;
+
+    auto it = find_if(v.begin(), v.end(), [isbnEliminar](const libro* L) {
+        return L->getISBN() == isbnEliminar;
+    });
+
+    if (it != v.end()) {
+        delete *it;
+        v.erase(it);
+
+        cout << "Libro eliminado exitosamente.\n";
+    } else {
+        cout << "No se encontro un libro con ese ISBN.\n";
+    }
+
+    getch(); 
+}
 
 void menu3() {
     int opcion;
@@ -579,14 +600,17 @@ void menuPrincipal() {
 
         switch(opcion) {
             case 1:
+            system("cls");
             menu1();
             break;
 
             case 2:
+            system("cls");
             menu2();
             break;
 
             case 3:
+            system("cls");
             menu3();
             break;
 
@@ -596,6 +620,7 @@ void menuPrincipal() {
             default:
             cout << "Opcion invalida. Ingrese otra opcion.";
             getch();
+            system("cls");
             menuPrincipal();
         }
 }
