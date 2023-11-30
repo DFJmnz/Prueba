@@ -139,13 +139,10 @@ double calcularPromedio(double lista[], int longitud);
 
 void menu2();
 
-
 void menu3();
 
-
-
-vector<libro*> v;
-vector<libro*> carrito; // Nuevo vector para almacenar libros en el carrito
+vector<libro*> v; //Vector para almacenar todos los libros
+vector<libro*> carrito; //Vector para almacenar libros en el carrito
 
 
 
