@@ -139,9 +139,7 @@ double calcularPromedio(double lista[], int longitud);
 
 void menu2();
 
-
 void menu3();
-
 
 
 vector<libro*> v;
@@ -365,7 +363,7 @@ void eliminarLibro() {
 
         cout << "Libro eliminado exitosamente.\n";
     } else {
-        cout << "No se encontro un libro con ese ISBN.\n";
+        cout << "No se encontro un libro con ese ISBN, vuela a intentar.\n";
     }
 
     getch();
@@ -517,7 +515,7 @@ void agregarAlCarrito() {
 
 void mostrarCarrito() {
     if (carrito.empty()) {
-        cout << "El carrito esta vacio. Presiona enter para volver al simulador de compra" << endl;
+        cout << "\nEl carrito esta vacio. Presiona enter para volver al simulador de compra" << endl;
         getch();
     } else {
         system("cls");
@@ -529,24 +527,24 @@ void mostrarCarrito() {
 }
 
 void eliminarDelCarrito() {
-    string isbnEliminar;
-    cout << "Ingrese el ISBN del libro que desea eliminar: ";
-    cin >> isbnEliminar;
+    string isbnEliminarCarrito;
+    system("cls");
+    cout << "\nIngrese el ISBN del libro que desea eliminar: ";
+    cin >> isbnEliminarCarrito;
 
-    auto it = find_if(v.begin(), v.end(), [isbnEliminar](const libro* L) {
-        return L->getISBN() == isbnEliminar;
+    auto it = find_if(carrito.begin(), carrito.end(), [isbnEliminarCarrito](const libro* L) {
+        return L->getISBN() == isbnEliminarCarrito;
     });
 
-    if (it != v.end()) {
+    if (it != carrito.end()) {
         delete *it;
-        v.erase(it);
+        carrito.erase(it);
 
-        cout << "Libro eliminado exitosamente.\n";
+        cout << "\nLibro eliminado exitosamente. Presione para volver al simulador de compra.\n";
+        getch();
     } else {
-        cout << "No se encontro un libro con ese ISBN.\n";
+        cout << "\nNo se encontro un libro con ese ISBN. Vuelva a intentar.\n";
     }
-
-    getch(); 
 }
 
 void menu3() {
@@ -571,7 +569,7 @@ void menu3() {
         break;
 
     case 3:
-        //Código para eliminar un libro del carrito (implementación adicional)
+        eliminarDelCarrito();
         system("cls");
         menu3();
         break;
