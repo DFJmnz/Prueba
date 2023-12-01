@@ -10,23 +10,6 @@
 
 using namespace std;
 
-int leerEntero() {  // Función para leer enteros de manera segura
-    int valor;
-    while (true) {
-        cin >> valor;
-
-        if (cin.fail()) {
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cout << "ERROR. Introduce un valor entero valido: ";
-        } else {
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            break;
-        }
-    }
-    return valor;
-}
-
 class libro {
 private:
     char titulo[150];
@@ -40,7 +23,12 @@ private:
     static int numeroLibro;
 
 public:
-   libro(const char titulo[], const char autor[], const char genero[], int anioPublic, 
+    libro() : anioPublic(0), precio(0.0), numPaginas(0) {   // Constructor predeterminado
+        numeroLibro++;
+        ISBN = generarISBN();
+    }
+
+    libro(const char titulo[], const char autor[], const char genero[], int anioPublic, 
         const char editorial[], float precio, int numPaginas) 
         : anioPublic(anioPublic), precio(precio), numPaginas(numPaginas) {
 
@@ -148,17 +136,34 @@ public:
 
 };
 
+//Funciones y variables globales
 int libro::numeroLibro = 0;
-
-//Prototipo de funcion
+string nombreArchivoCargar;
 void imprimirLibros(vector<libro*> v);
 void menuPrincipal();
 void menu1();
 void menu2();
 void menu3();
-
 vector<libro*> v;   //Vector para alamacenar todos los libros
 vector<libro*> carrito; // Vector para almacenar libros en el carrito
+
+int leerEntero() {  // Función para leer enteros de manera segura
+    int valor;
+    while (true) {
+        cin >> valor;
+
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "ERROR. Introduce un valor entero valido: ";
+        } else {
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            break;
+        }
+    }
+
+    return valor;
+}
 
 /*-------------------------- MENÚ 1 (BUSCADOR DE LIBROS) Y SUS FUNCIONES --------------------------*/
 void listadoLibros(vector<libro*> v) {
@@ -192,30 +197,31 @@ void imprimirLibroGenero(vector<libro*> v) {
     cout << "\n>> Selecciona el genero para ver los libros disponibles:\n\n";
     cout << " 1. Ciencias de la computacion \n 2. Ciencias de la salud \n 3. Ciencias ambientales \n 4. Ingenieria mecanica \n 5. Arquitectura";
     cout << "\n\nSeleccion: ";
-    cin >> opcion;
+    opcion = leerEntero();
 
     // Filtrar la lista de libros según la opción seleccionada
     vector<libro*> librosPorGenero;
+
     switch (opcion) {
-        //system("cls");
+
         case 1:
             copy_if(v.begin(), v.end(), back_inserter(librosPorGenero),
-                    [](const libro* L) { return strcmp(L->getGenero(), "Ciencias de la computacion") == 0; });
+                    [](const libro* L) { return strcmp(L->getGenero(), "Ciencias de la Computacion") == 0; });
             break;
 
         case 2:
             copy_if(v.begin(), v.end(), back_inserter(librosPorGenero),
-                    [](const libro* L) { return strcmp(L->getGenero(), "Ciencias de la salud") == 0; });
+                    [](const libro* L) { return strcmp(L->getGenero(), "Ciencias de la Salud") == 0; });
             break;
 
         case 3:
             copy_if(v.begin(), v.end(), back_inserter(librosPorGenero),
-                    [](const libro* L) { return strcmp(L->getGenero(), "Ciencias ambientales") == 0; });
+                    [](const libro* L) { return strcmp(L->getGenero(), "Ciencias Ambientales") == 0; });
             break;
 
         case 4:
             copy_if(v.begin(), v.end(), back_inserter(librosPorGenero),
-                    [](const libro* L) { return strcmp(L->getGenero(), "Ingenieria mecanica") == 0; });
+                    [](const libro* L) { return strcmp(L->getGenero(), "Ingenieria Mecanica") == 0; });
             break;
 
         case 5:
@@ -300,7 +306,6 @@ void menu1() {
         cout<<"\n>> Selecciona una opcion para ver los libros:\n";
         cout<<" 1. Ver todos los libros \n 2. Buscar por genero \n 3. Buscar libro por ISBN \n 4. Promedio de numero de paginas de todos los libros \n 5. Volver al menu principal";
         cout<<"\n\nSeleccion: ";
-        cin>>opcion;
         opcion = leerEntero();
 
         switch(opcion) {
@@ -477,16 +482,16 @@ void modificarLibro() {
 }
 
 void descargarLibros(const vector<libro*>& v) {
-    const string nombreArchivo = "libros.txt";
+    const string nombreArchivoDescargar = "libros.txt";
 
-    ifstream archivoEntrada(nombreArchivo);
+    ifstream archivoEntrada(nombreArchivoDescargar);
     if (!archivoEntrada.good()) {
         // Si el archivo no existe, crea uno nuevo
-        ofstream nuevoArchivo(nombreArchivo);
+        ofstream nuevoArchivo(nombreArchivoDescargar);
         nuevoArchivo.close();
     }
 
-    ofstream archivoSalida(nombreArchivo, ios_base::app);
+    ofstream archivoSalida(nombreArchivoDescargar, ios_base::trunc); //Permitira abrir el archivo y borrar contenido antes de escribir
     if (archivoSalida.is_open()) {
         for (const auto& libro : v) {
             archivoSalida << "Titulo: " << libro->getTitulo() << "\n";
@@ -501,16 +506,67 @@ void descargarLibros(const vector<libro*>& v) {
         }
         // Cierra el archivo
         archivoSalida.close();
-        cout << ">> Libros guardados en el archivo 'libros.txt'. Presione cualquier tecla para continuar.\n";
+        cout << "\n>> Libros guardados en el archivo 'libros.txt'. Presione cualquier tecla para volver al gestionador.\n";
     } else {
-        cerr << "Hubo problemas para escribir en el archivo para escribir. Vuelve a intentar.\n";
+        cerr << "\nHubo problemas para escribir en el archivo para escribir. Vuelve a intentar.\n";
     }
     getch();
 }
 
-/*void cargarLibros() {
+void cargarLibros(vector<libro*>& v) {
+    system("cls");
+    string nombreArchivoCargar;
+    cout << ">> Ingrese el nombre del archivo para cargar los libros: ";
+    cin >> nombreArchivoCargar;
+    ifstream archivoEntrada(nombreArchivoCargar);
 
-}*/
+    if (!archivoEntrada.is_open()) {
+        cerr << "Error al abrir el archivo " << nombreArchivoCargar << endl;
+        cout << "Presiona cualquier tecla para volver al gestionador.";
+        getch();
+        return;
+    }
+
+    string linea;
+    libro* nuevoLibro = nullptr;
+
+    while (getline(archivoEntrada, linea)) {
+        istringstream iss(linea);
+        string clave, valor;
+        getline(iss, clave, ':');
+        getline(iss, valor);
+
+        if (clave == "Titulo") {
+            if (nuevoLibro != nullptr) {
+                v.push_back(nuevoLibro); // Agregar el libro al vector de todos los objetos
+            }       
+            nuevoLibro = new libro();   // Crear un nuevo objeto libro
+            nuevoLibro->setTitulo(valor.c_str());
+        } else if (clave == "Autor") {
+            nuevoLibro->setAutor(valor.c_str());
+        } else if (clave == "Genero") {
+            nuevoLibro->setGenero(valor.c_str());
+        } else if (clave == "# Paginas") {
+            nuevoLibro->setNumPaginas(stoi(valor));
+        } else if (clave == "Anio de publicacion") {
+            nuevoLibro->setAnioPublic(stoi(valor));
+        } else if (clave == "Editorial") {
+            nuevoLibro->setEditorial(valor.c_str());
+        } else if (clave == "Precio") {
+            nuevoLibro->setPrecio(stof(valor));
+        }
+    }
+
+    // Agregar libro al vector
+    if (nuevoLibro != nullptr) {
+        v.push_back(nuevoLibro);
+    }
+    archivoEntrada.close();
+
+    cout << "\nLibros agregados con exito. Presione cualquier tecla para volver al gestionador.";
+    getch();
+
+}
 
 void menu2() {
     system("cls");
@@ -519,7 +575,6 @@ void menu2() {
         cout<<"\n>> Selecciona una opcion para gestionar los libros:\n";
         cout<<" 1. Agregar un nuevo libro \n 2. Eliminar un libro \n 3. Modificar un libro \n 4. Descargar los libros de la base de datos\n 5. Cargar los libros a la base de datos\n 6. Volver al menu principal";
         cout<<"\n\nSeleccion: ";
-        cin>>opcion;
         opcion = leerEntero();
 
         switch(opcion) {
@@ -537,7 +592,12 @@ void menu2() {
                 break;
             case 4:
                 descargarLibros(v);
+                menu2();
+                break;
             case 5:
+                cargarLibros(v);
+                menu2();
+                break;
             case 6:
                 menuPrincipal();
             default:
@@ -587,7 +647,6 @@ void agregarAlCarrito() {
 
     cout << "\n1. Agregar otro libro \n2. Mostrar el carrito \n3. Volver al menu";
     cout << "\n\nSeleccione: ";
-    cin >> opcion;
     opcion = leerEntero();
 
     switch(opcion) {
@@ -637,7 +696,6 @@ void menu3() {
     cout << "\n>> Bienvenido al simulador de compra. Selecciona una opcion:\n";
     cout << " 1. Agregar un libro al carrito \n 2. Mostrar carrito \n 3. Eliminar un libro del carrito \n 4. Volver al menu principal";
     cout << "\n\nSeleccion: ";
-    cin >> opcion;
     opcion = leerEntero();
 
     switch (opcion) {
@@ -671,10 +729,8 @@ void menuPrincipal() {
         cout<<"\n>> Bienvenido. Eliga una opcion para comenzar:\n";
         cout<<" 1. Buscador de libros \n 2. Gestionar libros \n 3. Simulador de compra \n 4. Salir";
         cout<<"\n\nSeleccion: ";
-        cin>>opcion;
-        opcion = leerEntero();
 
-        switch(opcion) {
+        switch(opcion = leerEntero()) {
             case 1:
                 menu1();
                 break;
@@ -686,7 +742,6 @@ void menuPrincipal() {
                 break;
             case 4:
                 exit(0);
-                break;
             default:
                 cout << "Opcion invalida. Vuelva a intentar.";
                 getch();

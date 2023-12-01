@@ -1,0 +1,119 @@
+Titulo: Teoria de la computacion
+Autor: Michael Sipser
+Genero: Ciencias de la Computacion
+# Paginas: 400
+Anio de publicacion: 2010
+Editorial: Editorial Computacion
+Precio: 300
+
+Titulo: Entrevista de Codificacion
+Autor: Gayle Laakmann McDowell
+Genero: Ciencias de la Computacion
+# Paginas: 350
+Anio de publicacion: 2012
+Editorial: Entrevistas Press
+Precio: 250
+
+Titulo: IA
+Autor: Russell y Norvig
+Genero: Ciencias de la Computacion
+# Paginas: 600
+Anio de publicacion: 2015
+Editorial: Inteligencia Editorial
+Precio: 400
+
+Titulo: Anatomia de Gray
+Autor: Richard Drake
+Genero: Ciencias de la Salud
+# Paginas: 800
+Anio de publicacion: 2008
+Editorial: Salud Publicaciones
+Precio: 500
+
+Titulo: Enfermeria Quirurgica
+Autor: Susan C. deWit
+Genero: Ciencias de la Salud
+# Paginas: 450
+Anio de publicacion: 2013
+Editorial: Enfermeria Ediciones
+Precio: 350
+
+Titulo: Principios de Bioquimica
+Autor: Nelson y Cox
+Genero: Ciencias de la Salud
+# Paginas: 550
+Anio de publicacion: 2011
+Editorial: Bioquimica Books
+Precio: 450
+
+Titulo: Primavera Silenciosa
+Autor: Rachel Carson
+Genero: Ciencias Ambientales
+# Paginas: 300
+Anio de publicacion: 2005
+Editorial: Ambiental Press
+Precio: 200
+
+Titulo: Tejiendo Raices Dulces
+Autor: Robin Wall Kimmerer
+Genero: Ciencias Ambientales
+# Paginas: 400
+Anio de publicacion: 2017
+Editorial: Naturaleza Libros
+Precio: 280
+
+Titulo: La Sexta Extincion
+Autor: Elizabeth Kolbert
+Genero: Ciencias Ambientales
+# Paginas: 350
+Anio de publicacion: 2014
+Editorial: Extincion Editorial
+Precio: 320
+
+Titulo: Mecanica de Materiales
+Autor: Russell C. Hibbeler
+Genero: Ingenieria Mecanica
+# Paginas: 700
+Anio de publicacion: 2016
+Editorial: Materiales Publishing
+Precio: 550
+
+Titulo: Diseno en Ingenieria Mecanica de Shigley
+Autor: Richard G. Budynas y Keith J. Nisbett
+Genero: Ingenieria Mecanica
+# Paginas: 600
+Anio de publicacion: 2019
+Editorial: Ingenieria Designs
+Precio: 480
+
+Titulo: Termodinamica en Ingenieria
+Autor: Michael J. Moran y Howard N. Shapiro
+Genero: Ingenieria Mecanica
+# Paginas: 550
+Anio de publicacion: 2014
+Editorial: Termodinamica Press
+Precio: 480
+
+Titulo: La Arquitectura de la Felicidad
+Autor: Alain de Botton
+Genero: Arquitectura y Diseno
+# Paginas: 250
+Anio de publicacion: 2010
+Editorial: Felicidad Ediciones
+Precio: 220
+
+Titulo: Pensar Rapido, Pensar Despacio
+Autor: Daniel Kahneman
+Genero: Arquitectura y Diseno
+# Paginas: 400
+Anio de publicacion: 2013
+Editorial: Pensamiento Lento Publishing
+Precio: 300
+
+Titulo: El Diseno de las Cosas Cotidianas
+Autor: Donald A. Norman
+Genero: Arquitectura y Diseno
+# Paginas: 300
+Anio de publicacion: 2012
+Editorial: Diseno Diario
+Precio: 500
