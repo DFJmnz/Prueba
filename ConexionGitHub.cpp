@@ -513,26 +513,6 @@ void menu2() {
 }
 
 /*-------------------- MENÚ 3 (SIMULADOR DE COMPRA) Y SUS FUNCIONES ---------------------------*/
-void agregarAlCarrito() {
-    string isbn;
-    system("cls");
-    cout << "\nIngresa el ISBN del libro que deseas agregar al carrito: ";
-    cin >> isbn;
-
-    libro* libroEncontrado = comparadorISBN(isbn, v);
-
-    if (libroEncontrado != nullptr) {
-        if (count(carrito.begin(), carrito.end(), libroEncontrado) == false){
-            carrito.push_back(libroEncontrado); //Agrega el libro al carrito
-            cout << " Agregado al carrito exitosamente." << endl;
-        } else cout << "fuk u\n";
-    }
-    cout << "\nPresione cualquier tecla para continuar.";
-    getch();
-    
-    //cout << "Presione 's' si desea agregar otro libro o 'n' para volver al menu"
-}
-
 void mostrarCarrito() {
     if (carrito.empty()) {
         cout << "\nEl carrito esta vacio. Presiona enter para volver al simulador de compra" << endl;
@@ -544,6 +524,47 @@ void mostrarCarrito() {
         cout << "Presiona enter para volver al simulador de compra.";
         getch();
     }
+}
+
+void agregarAlCarrito() {
+    string isbn;
+    int opcion;
+    system("cls");
+    cout << "\nIngresa el ISBN del libro que deseas agregar al carrito: ";
+    cin >> isbn;
+
+    libro* libroEncontrado = comparadorISBN(isbn, v);
+
+    if (libroEncontrado != nullptr) {
+        if (count(carrito.begin(), carrito.end(), libroEncontrado) == false){
+            carrito.push_back(libroEncontrado); //Agrega el libro al carrito
+            cout << "Agregado al carrito exitosamente." << endl;
+        } else cout << "No se puede agregar porque ya se encuentra en el carrito\n";
+    }
+
+    cout << "\n1. Agregar otro libro \n2. Mostrar el carrito \n3. Volver al menu\n";
+    cout << "Seleccione: ";
+    cin >> opcion;
+
+    switch(opcion) {
+        case 1:
+        system("cls");
+        agregarAlCarrito();
+        break;
+
+        case 2:
+        system("cls");
+        mostrarCarrito();
+        break;
+
+        case 3:
+        system("cls");
+        menu3();
+        break;
+    }
+
+    getch();
+
 }
 
 void eliminarDelCarrito() {
@@ -572,7 +593,7 @@ void menu3() {
     cout << "\n**** SISTEMA DE GESTION PARA LIBRERIAS ****\n\t\t Simulador de compra\n";
     cout << "\n>>Bienvenido al simulador de compra. Selecciona una opcion:\n";
     cout << "1. Agregar un libro al carrito \n2. Mostrar carrito \n3. Eliminar un libro del carrito \n4. Volver al menu principal";
-    cout << "\nSeleccion : ";
+    cout << "\nSeleccion: ";
     cin >> opcion;
 
     switch (opcion) {
@@ -590,6 +611,7 @@ void menu3() {
 
     case 3:
         eliminarDelCarrito();
+        system("cls");
         menu3();
         break;
 
@@ -600,6 +622,7 @@ void menu3() {
     default:
         cout << "Opcion invalida. Ingrese otra opcion.";
         getch();
+        system("cls");
         menu3();
     }
 }
